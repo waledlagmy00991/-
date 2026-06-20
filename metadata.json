@@ -1,0 +1,6 @@
+{
+  "name": "المنشاوي",
+  "description": "منبه صلوات ذكي متكامل بصوت الشيخ المنشاوي مع نظام حماية كلي لمنع تفويت الصلاة وتعطيل الحذف غير المصرح به.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
