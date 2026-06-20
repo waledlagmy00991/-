@@ -43,6 +43,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.MainViewModel
 import com.example.data.AppConfig
 import com.example.ui.theme.MyApplicationTheme
+import com.example.ui.theme.PrimaryTeal
+import com.example.ui.theme.PrimaryContainerTeal
+import com.example.ui.theme.OnPrimaryTeal
+import com.example.ui.theme.OnPrimaryContainerTeal
+import com.example.ui.theme.NeutralDark
+import com.example.ui.theme.NeutralMedium
+import com.example.ui.theme.NeutralLight
+import com.example.ui.theme.NeutralBorder
+import com.example.ui.theme.LightGrayContainer
+import com.example.ui.theme.MutedDivider
+import com.example.ui.theme.ErrorCrimson
+import com.example.ui.theme.ErrorContainerRed
+import androidx.compose.foundation.Canvas
 import com.example.util.PrayerTimesCalculator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -116,9 +129,9 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF004D4D),
-                        Color(0xFF006A6A),
-                        Color(0xFF191C1C)
+                        PrimaryTeal,
+                        PrimaryTeal,
+                        NeutralDark
                     )
                 )
             ),
@@ -139,13 +152,13 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
-                        .background(Color(0xFFCCE8E8), RoundedCornerShape(24.dp)),
+                        .background(PrimaryContainerTeal, RoundedCornerShape(24.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.NotificationsActive,
                         contentDescription = null,
-                        tint = Color(0xFF006A6A),
+                        tint = PrimaryTeal,
                         modifier = Modifier.size(40.dp)
                     )
                 }
@@ -161,7 +174,7 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                 Text(
                     text = "منبه صلوات ذكي متكامل بصوت الشيخ المنشاوي مع نظام حماية كلي لمنع تفويت الصلاة وتعطيل الحذف اليدوي.",
                     fontSize = 14.sp,
-                    color = Color(0xFFCCE8E8),
+                    color = PrimaryContainerTeal,
                     textAlign = TextAlign.Center,
                     lineHeight = 22.sp
                 )
@@ -171,7 +184,7 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 shape = RoundedCornerShape(32.dp),
-                border = BorderStroke(1.dp, Color(0xFFDCE5E5)),
+                border = BorderStroke(1.dp, NeutralBorder),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
@@ -186,13 +199,13 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                             text = "تعيين رقم حماية سري",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF006A6A),
+                            color = PrimaryTeal,
                             textAlign = TextAlign.Center
                         )
                         Text(
                             text = "أدخل رقمًا سريًا للتطبيق لمنع إيقاف التنبيه أو إلغاء التثبيت من قبل الآخرين.",
                             fontSize = 12.sp,
-                            color = Color(0xFF3F4948),
+                            color = NeutralMedium,
                             textAlign = TextAlign.Center
                         )
                         OutlinedTextField(
@@ -204,9 +217,9 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color(0xFF006A6A),
-                                unfocusedBorderColor = Color(0xFFDCE5E5),
-                                focusedLabelColor = Color(0xFF006A6A)
+                                focusedBorderColor = PrimaryTeal,
+                                unfocusedBorderColor = NeutralBorder,
+                                focusedLabelColor = PrimaryTeal
                             ),
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -215,14 +228,14 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                             text = "تفعيل حمايات الأمان لمنع الحذف الكلي",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF006A6A),
+                            color = PrimaryTeal,
                             textAlign = TextAlign.Center
                         )
                         
                         Text(
                             text = "للحفاظ على أمان أداء المنبه وعدم إلغاء تثبيته يدويًا، يُرجى تمكين وضع مدير جهاز النظام.",
                             fontSize = 12.sp,
-                            color = Color(0xFF3F4948),
+                            color = NeutralMedium,
                             textAlign = TextAlign.Center
                         )
 
@@ -237,7 +250,7 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                                 }
                                 context.startActivity(intent)
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFE932C)),
+                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryTeal),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Icon(imageVector = Icons.Default.Security, contentDescription = null, tint = Color.White)
@@ -260,12 +273,12 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                                         Toast.makeText(context, "إذن التنبيه الدقيق مفعّل بالفعل!", Toast.LENGTH_SHORT).show()
                                     }
                                 },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF003527)),
+                                colors = ButtonDefaults.buttonColors(containerColor = PrimaryContainerTeal),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Icon(imageVector = Icons.Default.Timer, contentDescription = null, tint = Color.White)
+                                Icon(imageVector = Icons.Default.Timer, contentDescription = null, tint = PrimaryTeal)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("إذن المنبهات الدقيقة", color = Color.White)
+                                Text("إذن المنبهات الدقيقة", color = PrimaryTeal)
                             }
                         }
                     }
@@ -285,7 +298,7 @@ fun OnboardingScreen(onGetStarted: (String) -> Unit) {
                         onGetStarted(pinText)
                     }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFE932C)),
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryTeal),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -326,20 +339,80 @@ fun PrayersDashboard(viewModel: MainViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(Color(0xFFF9F9FF))
+            .background(NeutralLight)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Digital Clock Countdown Banner
+        // Geometric Design Header
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(PrimaryTeal, RoundedCornerShape(12.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Mosque,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                Column {
+                    Text(
+                        text = "مؤذن المنشاوي",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = NeutralDark
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Canvas(modifier = Modifier.size(6.dp)) {
+                            drawCircle(PrimaryTeal)
+                        }
+                        Text(
+                            text = "نظام الحماية نشط",
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = PrimaryTeal
+                        )
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(PrimaryContainerTeal, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = null,
+                    tint = OnPrimaryContainerTeal,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        // Clock / Countdown Banner Card
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(24.dp))
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(Color(0xFF003527), Color(0xFF064E3B))
-                    )
-                )
+                .clip(RoundedCornerShape(32.dp))
+                .background(PrimaryTeal)
                 .padding(24.dp)
         ) {
             Column {
@@ -351,79 +424,408 @@ fun PrayersDashboard(viewModel: MainViewModel) {
                     Column {
                         Text(
                             text = "الصلاة القادمة: $nextPrayerName",
-                            color = Color(0xFF80BEA6),
-                            fontSize = 14.sp,
+                            color = PrimaryContainerTeal,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "وقت الأذان " + nextPrayerTime,
                             color = Color.White,
-                            fontSize = 24.sp,
+                            fontSize = 28.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Box(
                         modifier = Modifier
                             .size(52.dp)
-                            .background(Color(0x20FFFFFF), CircleShape),
+                            .background(Color(0x1BFFFFFF), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Default.WbSunny,
+                            imageVector = if (nextPrayerName == "الفجر" || nextPrayerName == "العشاء") Icons.Default.Bedtime else Icons.Default.WbSunny,
                             contentDescription = null,
-                            tint = Color(0xFFFE932C),
+                            tint = Color.White,
                             modifier = Modifier.size(28.dp)
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                Divider(color = Color(0x30FFFFFF))
+                Divider(color = Color(0x20FFFFFF), thickness = 1.dp)
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Bottom
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    Box(
+                        modifier = Modifier
+                            .background(Color(0x20FFFFFF), RoundedCornerShape(100.dp))
+                            .padding(horizontal = 14.dp, vertical = 6.dp)
+                    ) {
                         Text(
-                            text = "الوقت المتبقي للأذان الكلي",
-                            color = Color(0xFF80BEA6),
-                            fontSize = 12.sp
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = countdown,
-                            color = Color(0xFFFE932C),
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Black
+                            text = "متبقي $countdown",
+                            color = Color.White,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold
                         )
                     }
-                    Button(
-                        onClick = {
-                            val triggerIntent = Intent(context, AlMinshawiAlarmReceiver::class.java).apply {
-                                putExtra("PRAYER_NAME", "تجربة")
-                            }
-                            context.sendBroadcast(triggerIntent)
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFE932C)),
-                        shape = RoundedCornerShape(100.dp)
-                    ) {
-                        Icon(imageVector = Icons.Default.VolumeUp, contentDescription = null, modifier = Modifier.size(16.dp))
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text("تجربة الصوت الأقصى", fontSize = 11.sp, color = Color.White)
+
+                    Column(horizontalAlignment = Alignment.End) {
+                        Text(
+                            text = "بصوت الشيخ",
+                            color = PrimaryContainerTeal,
+                            fontSize = 10.sp
+                        )
+                        Text(
+                            text = "محمد صديق المنشاوي",
+                            color = Color.White,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
         }
 
-        // Location & calculation methods bar
+        val downloadState by viewModel.downloadState.collectAsStateWithLifecycle()
+        
+        when (downloadState) {
+            is DownloadState.Downloading -> {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = PrimaryContainerTeal),
+                    shape = RoundedCornerShape(24.dp),
+                    border = BorderStroke(1.dp, PrimaryTeal.copy(alpha = 0.2f)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        CircularProgressIndicator(
+                            color = PrimaryTeal,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.5.dp
+                        )
+                        Column {
+                            Text(
+                                text = "جاري تحميل أذان الشيخ المنشاوي...",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = PrimaryTeal
+                            )
+                            Text(
+                                text = "يتم الآن تأمين مكتبة الصوت لتعمل بدون إنترنت وبأقصى دقة.",
+                                fontSize = 11.sp,
+                                color = NeutralMedium
+                            )
+                        }
+                    }
+                }
+            }
+            is DownloadState.Error -> {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFEEBEE)),
+                    shape = RoundedCornerShape(24.dp),
+                    border = BorderStroke(1.dp, ErrorCrimson.copy(alpha = 0.2f)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Error,
+                            contentDescription = null,
+                            tint = ErrorCrimson,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "تعذر تحميل ملف الأذان",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = ErrorCrimson
+                            )
+                            Text(
+                                text = "سيتم استخدام التنبيه الافتراضي مؤقتًا. اضغط للتحميل.",
+                                fontSize = 11.sp,
+                                color = NeutralMedium
+                            )
+                        }
+                        Button(
+                            onClick = { viewModel.downloadAthanIfMissing() },
+                            colors = ButtonDefaults.buttonColors(containerColor = ErrorCrimson),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                            shape = RoundedCornerShape(100.dp)
+                        ) {
+                            Text("إعادة", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+            is DownloadState.Success -> {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(24.dp),
+                    border = BorderStroke(1.dp, NeutralBorder),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .background(PrimaryContainerTeal, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                tint = PrimaryTeal,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                        Column {
+                            Text(
+                                text = "مكتبة أذان الشيخ المنشاوي نشطة",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = NeutralDark
+                            )
+                            Text(
+                                text = "ملف الصوت محمل وجاهز للعمل بالكامل بدون الاتصال بالإنترنت.",
+                                fontSize = 11.sp,
+                                color = NeutralMedium
+                            )
+                        }
+                    }
+                }
+            }
+            else -> {}
+        }
+
+        // Geometric Symmetry Cards Grid
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Volume lock shortcut card
+            Card(
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                shape = RoundedCornerShape(24.dp),
+                border = BorderStroke(1.dp, NeutralBorder),
+                modifier = Modifier.weight(1f)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(LightGrayContainer, RoundedCornerShape(12.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.VolumeUp,
+                            contentDescription = null,
+                            tint = NeutralMedium,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Column {
+                        Text(
+                            text = "مستوى الصوت",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = NeutralDark
+                        )
+                        Text(
+                            text = "مُثبَّت على الأقصى",
+                            fontSize = 11.sp,
+                            color = PrimaryTeal,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+            }
+
+            // Anti-deletion / system stabilization card
+            Card(
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                shape = RoundedCornerShape(24.dp),
+                border = BorderStroke(1.dp, NeutralBorder),
+                modifier = Modifier.weight(1f)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(LightGrayContainer, RoundedCornerShape(12.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Security,
+                            contentDescription = null,
+                            tint = NeutralMedium,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Column {
+                        Text(
+                            text = "تثبيت النظام",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = NeutralDark
+                        )
+                        Text(
+                            text = "غير قابل للحذف",
+                            fontSize = 11.sp,
+                            color = PrimaryTeal,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+            }
+        }
+
+        // Secondary feature lock switches strip
+        Card(
+            colors = CardDefaults.cardColors(containerColor = LightGrayContainer),
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Canvas(modifier = Modifier.size(6.dp)) {
+                            drawCircle(PrimaryTeal)
+                        }
+                        Text(
+                            text = "إغلاق التطبيق برقم سري",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = NeutralDark
+                        )
+                    }
+                    Switch(
+                        checked = config.pinCode.isNotEmpty(),
+                        onCheckedChange = {},
+                        enabled = false,
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = Color.White,
+                            checkedTrackColor = PrimaryTeal,
+                            disabledCheckedTrackColor = PrimaryTeal.copy(alpha = 0.5f),
+                            disabledCheckedThumbColor = Color.White
+                        )
+                    )
+                }
+
+                Divider(color = MutedDivider, thickness = 1.dp)
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(6.dp)
+                                .border(1.dp, NeutralMedium, CircleShape)
+                        )
+                        Text(
+                            text = "منع إطفاء الهاتف وقت الأذان",
+                            fontSize = 14.sp,
+                            color = NeutralMedium
+                        )
+                    }
+                    Switch(
+                        checked = false,
+                        onCheckedChange = {},
+                        enabled = false,
+                        colors = SwitchDefaults.colors(
+                            uncheckedThumbColor = MutedDivider,
+                            uncheckedTrackColor = LightGrayContainer
+                        )
+                    )
+                }
+            }
+        }
+
+        // Test Speaker Playback Feedback Bar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White, RoundedCornerShape(16.dp))
+                .border(1.dp, NeutralBorder, RoundedCornerShape(16.dp))
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.VolumeUp,
+                    contentDescription = null,
+                    tint = PrimaryTeal,
+                    modifier = Modifier.size(20.dp)
+                )
+                Text(
+                    text = "مستوى التنبيه ومستوى الرنين",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = NeutralDark
+                )
+            }
+            Button(
+                onClick = {
+                    val triggerIntent = Intent(context, AlMinshawiAlarmReceiver::class.java).apply {
+                        putExtra("PRAYER_NAME", "تجربة")
+                    }
+                    context.sendBroadcast(triggerIntent)
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryContainerTeal),
+                shape = RoundedCornerShape(50.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                modifier = Modifier.height(36.dp)
+            ) {
+                Text("تجربة التنبيه", fontSize = 11.sp, color = PrimaryTeal, fontWeight = FontWeight.Bold)
+            }
+        }
+
+        // Location & calculation details strip
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White, RoundedCornerShape(16.dp))
+                .border(1.dp, NeutralBorder, RoundedCornerShape(16.dp))
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -432,21 +834,21 @@ fun PrayersDashboard(viewModel: MainViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(imageVector = Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFF003527))
+                Icon(imageVector = Icons.Default.LocationOn, contentDescription = null, tint = PrimaryTeal)
                 Column {
-                    Text("الموقع والوقت الحالي", fontSize = 12.sp, color = Color.Gray)
-                    Text(config.locationName, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color(0xFF003527))
+                    Text("الموقع والوقت الحالي", fontSize = 12.sp, color = NeutralMedium)
+                    Text(config.locationName, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = NeutralDark)
                 }
             }
             Text(
                 text = if (config.calculationMethod == "UmmAlQura") "أم القرى" else "الهيئة المصرية",
-                color = Color(0xFFFE932C),
+                color = PrimaryTeal,
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp
             )
         }
 
-        // Prayer Timings List Header
+        // Timing list header
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -456,72 +858,69 @@ fun PrayersDashboard(viewModel: MainViewModel) {
                 text = "مواقيت الصلاة لليوم",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF003527)
+                color = NeutralDark
             )
             Text(
                 text = todayFormatted,
                 fontSize = 12.sp,
-                color = Color.Gray
+                color = NeutralMedium
             )
         }
 
-        // Table List of Prayers loaded offline
+        // Timing Table Card Layout
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(24.dp),
+            border = BorderStroke(1.dp, NeutralBorder),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 times?.let { t ->
                     PrayerRow(name = "الفجر", time = t.fajr, isEnabled = config.isFajrEnabled, onToggle = { viewModel.togglePrayerAlarm("الفجر", it) })
-                    Divider(color = Color(0x10000000))
+                    Divider(color = NeutralBorder)
                     PrayerRow(name = "الشروق", time = t.sunrise, isEnabled = false, onToggle = {}, showToggle = false)
-                    Divider(color = Color(0x10000000))
+                    Divider(color = NeutralBorder)
                     PrayerRow(name = "الظهر", time = t.dhuhr, isEnabled = config.isDhuhrEnabled, onToggle = { viewModel.togglePrayerAlarm("الظهر", it) })
-                    Divider(color = Color(0x10000000))
+                    Divider(color = NeutralBorder)
                     PrayerRow(name = "العصر", time = t.asr, isEnabled = config.isAsrEnabled, onToggle = { viewModel.togglePrayerAlarm("العصر", it) })
-                    Divider(color = Color(0x10000000))
+                    Divider(color = NeutralBorder)
                     PrayerRow(name = "المغرب", time = t.maghrib, isEnabled = config.isMaghribEnabled, onToggle = { viewModel.togglePrayerAlarm("المغرب", it) })
-                    Divider(color = Color(0x10000000))
+                    Divider(color = NeutralBorder)
                     PrayerRow(name = "العشاء", time = t.isha, isEnabled = config.isIshaEnabled, onToggle = { viewModel.togglePrayerAlarm("العشاء", it) })
                 } ?: Box(modifier = Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Color(0xFF003527))
+                    CircularProgressIndicator(color = PrimaryTeal)
                 }
             }
         }
 
-        // Daily spiritual quote & shortcuts (Asymmetric cards)
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+        // Spiritual Quote
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(PrimaryContainerTeal.copy(alpha = 0.4f), RoundedCornerShape(20.dp))
+                .border(1.dp, PrimaryContainerTeal, RoundedCornerShape(20.dp))
+                .padding(20.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFE7EEFF), RoundedCornerShape(20.dp))
-                    .padding(20.dp)
-            ) {
-                Column {
-                    Icon(imageVector = Icons.Default.FormatQuote, contentDescription = null, tint = Color(0xFF003527))
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "«أَقِمِ الصَّلَاةَ لِدُلُوكِ الشَّمْسِ إِلَىٰ غَسَقِ اللَّيْلِ وَقُرْآنَ الْفَجْرِ ۖ إِنَّ قُرْآنَ الْفَجْرِ كَانَ مَشْهُودًا»",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF003527),
-                        lineHeight = 26.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "سورة الإسراء - آية ٧٨",
-                        fontSize = 12.sp,
-                        color = Color.Gray,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+            Column {
+                Icon(imageVector = Icons.Default.FormatQuote, contentDescription = null, tint = PrimaryTeal)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "«أَقِمِ الصَّلَاةَ لِدُلُوكِ الشَّمْسِ إِلَىٰ غَسَقِ اللَّيْلِ وَقُرْآنَ الْفَجْرِ ۖ إِنَّ قُرْآنَ الْفَجْرِ كَانَ مَشْهُودًا»",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = PrimaryTeal,
+                    lineHeight = 26.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "سورة الإسراء - آية ٧٨",
+                    fontSize = 12.sp,
+                    color = NeutralMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
@@ -549,13 +948,13 @@ fun PrayerRow(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(if (isEnabled) Color(0xFFE7EEFF) else Color(0x10000000), CircleShape),
+                    .background(if (isEnabled) PrimaryContainerTeal else LightGrayContainer, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = if (name == "الفجر" || name == "العشاء") Icons.Default.Bedtime else Icons.Default.WbSunny,
                     contentDescription = null,
-                    tint = if (isEnabled) Color(0xFF003527) else Color.Gray,
+                    tint = if (isEnabled) PrimaryTeal else NeutralMedium,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -564,12 +963,12 @@ fun PrayerRow(
                     text = name,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF003527)
+                    color = NeutralDark
                 )
                 Text(
                     text = if (name == "الفجر") "Fajr" else if (name == "الظهر") "Dhuhr" else if (name == "العصر") "Asr" else if (name == "المغرب") "Maghrib" else if (name == "العشاء") "Isha" else "Sunrise",
                     fontSize = 10.sp,
-                    color = Color.Gray
+                    color = NeutralMedium
                 )
             }
         }
@@ -582,7 +981,7 @@ fun PrayerRow(
                 text = time,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF003527)
+                color = NeutralDark
             )
             if (showToggle) {
                 Switch(
@@ -590,9 +989,9 @@ fun PrayerRow(
                     onCheckedChange = onToggle,
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
-                        checkedTrackColor = Color(0xFFFE932C),
+                        checkedTrackColor = PrimaryTeal,
                         uncheckedThumbColor = Color.Gray,
-                        uncheckedTrackColor = Color(0x20000000)
+                        uncheckedTrackColor = LightGrayContainer
                     )
                 )
             }
@@ -616,7 +1015,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(Color(0xFFF9F9FF))
+            .background(NeutralLight)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
@@ -624,13 +1023,14 @@ fun SettingsScreen(viewModel: MainViewModel) {
             text = "الإعدادات العامة",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF003527)
+            color = PrimaryTeal
         )
 
         // Muadhan choice card
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(24.dp),
+            border = BorderStroke(1.dp, NeutralBorder)
         ) {
             Row(
                 modifier = Modifier
@@ -646,24 +1046,24 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     Box(
                         modifier = Modifier
                             .size(44.dp)
-                            .background(Color(0xFFE7EEFF), CircleShape),
+                            .background(PrimaryContainerTeal, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(imageVector = Icons.Default.VolumeUp, contentDescription = null, tint = Color(0xFF003527))
+                        Icon(imageVector = Icons.Default.VolumeUp, contentDescription = null, tint = PrimaryTeal)
                     }
                     Column {
-                        Text("القارئ المختار للتنبيه", fontSize = 14.sp, color = Color.Gray)
-                        Text("الشيخ محمد صديق المنشاوي", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF003527))
+                        Text("القارئ المختار للتنبيه", fontSize = 14.sp, color = NeutralMedium)
+                        Text("الشيخ محمد صديق المنشاوي", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = NeutralDark)
                     }
                 }
-                Text("ثابت", color = Color.Gray, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                Text("ثابت", color = NeutralMedium, fontSize = 13.sp, fontWeight = FontWeight.Bold)
             }
         }
 
         // Commitment mode toggle card
         Card(
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF003527)),
-            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = PrimaryTeal),
+            shape = RoundedCornerShape(24.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
@@ -673,7 +1073,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    Icon(imageVector = Icons.Default.Security, contentDescription = null, tint = Color(0xFFFE932C))
+                    Icon(imageVector = Icons.Default.Security, contentDescription = null, tint = PrimaryContainerTeal)
                     Text(
                         text = "وضع الالتزام الكلي",
                         color = Color.White,
@@ -684,7 +1084,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "يضمن وصول الصوت لأقصى درجة، ويمنع إغلاق التنبيه أو إلغاء تثبيت التطبيق بسهولة لضمان عدم تفويت أي صلاة.",
-                    color = Color(0xFF80BEA6),
+                    color = PrimaryContainerTeal,
                     fontSize = 13.sp,
                     lineHeight = 20.sp
                 )
@@ -707,8 +1107,8 @@ fun SettingsScreen(viewModel: MainViewModel) {
                             }
                         },
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = Color.White,
-                            checkedTrackColor = Color(0xFFFE932C),
+                            checkedThumbColor = PrimaryTeal,
+                            checkedTrackColor = Color.White,
                             uncheckedThumbColor = Color.Gray,
                             uncheckedTrackColor = Color(0x30FFFFFF)
                         )
@@ -717,33 +1117,34 @@ fun SettingsScreen(viewModel: MainViewModel) {
             }
         }
 
-        // Coordinates & calculations
-        Text("الموقع وطريقة الحساب", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF003527))
+        // Coordinates & calculations headings
+        Text("الموقع وطريقة الحساب", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = PrimaryTeal)
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(24.dp),
+            border = BorderStroke(1.dp, NeutralBorder)
         ) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                // Method choose
+                // Method choose options
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("طريقة الحساب الرياضية", fontWeight = FontWeight.Bold, color = Color(0xFF003527))
+                    Text("طريقة الحساب الرياضية", fontWeight = FontWeight.Bold, color = NeutralDark)
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Button(
                             onClick = { viewModel.updateCalculationMethod("UmmAlQura") },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (config.calculationMethod == "UmmAlQura") Color(0xFF003527) else Color(0x10000000)
+                                containerColor = if (config.calculationMethod == "UmmAlQura") PrimaryTeal else LightGrayContainer
                             ),
                             contentPadding = PaddingValues(horizontal = 14.dp)
                         ) {
                             Text(
                                 "أم القرى",
-                                color = if (config.calculationMethod == "UmmAlQura") Color.White else Color.Gray,
+                                color = if (config.calculationMethod == "UmmAlQura") Color.White else NeutralMedium,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -751,13 +1152,13 @@ fun SettingsScreen(viewModel: MainViewModel) {
                         Button(
                             onClick = { viewModel.updateCalculationMethod("Egyptian") },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (config.calculationMethod == "Egyptian") Color(0xFF003527) else Color(0x10000000)
+                                containerColor = if (config.calculationMethod == "Egyptian") PrimaryTeal else LightGrayContainer
                             ),
                             contentPadding = PaddingValues(horizontal = 14.dp)
                         ) {
                             Text(
                                 "الهيئة المصرية",
-                                color = if (config.calculationMethod == "Egyptian") Color.White else Color.Gray,
+                                color = if (config.calculationMethod == "Egyptian") Color.White else NeutralMedium,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -765,10 +1166,10 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     }
                 }
 
-                Divider(color = Color(0x10000000))
+                Divider(color = NeutralBorder)
 
                 // Custom Coordinate Setter (Quick Riyadh / Cairo Quick switchers)
-                Text("تعديل الموقع الجغرافي يدويًا", fontWeight = FontWeight.Bold, color = Color(0xFF003527))
+                Text("تعديل الموقع الجغرافي يدويًا", fontWeight = FontWeight.Bold, color = NeutralDark)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -776,26 +1177,26 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     Button(
                         onClick = { viewModel.updateCoords(24.7136, 46.6753, "الرياض، المملكة العربية السعودية") },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (config.customLatitude == 24.7136) Color(0xFFFE932C) else Color(0x10000000)
+                            containerColor = if (config.customLatitude == 24.7136) PrimaryTeal else LightGrayContainer
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
                             "الرياض",
-                            color = if (config.customLatitude == 24.7136) Color.White else Color.Gray,
+                            color = if (config.customLatitude == 24.7136) Color.White else NeutralMedium,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Button(
                         onClick = { viewModel.updateCoords(30.0444, 31.2357, "القاهرة، جمهورية مصر العربية") },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (config.customLatitude == 30.0444) Color(0xFFFE932C) else Color(0x10000000)
+                            containerColor = if (config.customLatitude == 30.0444) PrimaryTeal else LightGrayContainer
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
                             "القاهرة",
-                            color = if (config.customLatitude == 30.0444) Color.White else Color.Gray,
+                            color = if (config.customLatitude == 30.0444) Color.White else NeutralMedium,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -804,11 +1205,12 @@ fun SettingsScreen(viewModel: MainViewModel) {
         }
 
         // Security Configurations card
-        Text("حمايات وتأمينات", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF003527))
+        Text("حمايات وتأمينات", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = PrimaryTeal)
 
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(24.dp),
+            border = BorderStroke(1.dp, NeutralBorder)
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 // Change PIN
@@ -820,11 +1222,11 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("تغيير رقم الحماية السري", color = Color(0xFF003527), fontWeight = FontWeight.Bold)
-                    Icon(imageVector = Icons.Default.Edit, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(18.dp))
+                    Text("تغيير رقم الحماية السري", color = NeutralDark, fontWeight = FontWeight.Bold)
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = null, tint = NeutralMedium, modifier = Modifier.size(18.dp))
                 }
 
-                Divider(color = Color(0x10000000))
+                Divider(color = NeutralBorder)
 
                 // Request device policy manager active checks
                 Row(
@@ -845,8 +1247,8 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("التحقق من حماية التطبيق ضد الحذف", color = Color(0xFF003527), fontWeight = FontWeight.Bold)
-                    Icon(imageVector = Icons.Default.Security, contentDescription = null, tint = Color(0xFFFE932C), modifier = Modifier.size(18.dp))
+                    Text("التحقق من حماية التطبيق ضد الحذف", color = NeutralDark, fontWeight = FontWeight.Bold)
+                    Icon(imageVector = Icons.Default.Security, contentDescription = null, tint = PrimaryTeal, modifier = Modifier.size(18.dp))
                 }
             }
         }
@@ -871,18 +1273,18 @@ fun SettingsScreen(viewModel: MainViewModel) {
                         }
                     }
                 ) {
-                    Text("تحقق", color = Color(0xFFBA1A1A), fontWeight = FontWeight.Bold)
+                    Text("تحقق", color = ErrorCrimson, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { pinPromptOpen = false }) {
-                    Text("إلغاء")
+                    Text("إلغاء", color = NeutralDark)
                 }
             },
-            title = { Text("مطلوب رمز الحماية للتعطيل", fontWeight = FontWeight.Bold) },
+            title = { Text("مطلوب رمز الحماية للتعطيل", fontWeight = FontWeight.Bold, color = NeutralDark) },
             text = {
                 Column {
-                    Text("الرجاء إدخال رقم PIN لتأكيد رغبتك في تعطيل وضع الالتزام الكلي.", fontSize = 13.sp)
+                    Text("الرجاء إدخال رقم PIN لتأكيد رغبتك في تعطيل وضع الالتزام الكلي.", fontSize = 13.sp, color = NeutralMedium)
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = currentPinInput,
@@ -894,11 +1296,17 @@ fun SettingsScreen(viewModel: MainViewModel) {
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         isError = pinVerifyError,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = PrimaryTeal,
+                            unfocusedBorderColor = NeutralBorder,
+                            focusedLabelColor = PrimaryTeal,
+                            errorBorderColor = ErrorCrimson
+                        ),
                         modifier = Modifier.fillMaxWidth()
                     )
                     if (pinVerifyError) {
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text("الرمز أدخل خاطئ!", color = Color(0xFFBA1A1A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text("الرمز أدخل خاطئ!", color = ErrorCrimson, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -920,15 +1328,15 @@ fun SettingsScreen(viewModel: MainViewModel) {
                         }
                     }
                 ) {
-                    Text("حفظ", fontWeight = FontWeight.Bold)
+                    Text("حفظ", fontWeight = FontWeight.Bold, color = PrimaryTeal)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { changePinOpen = false }) {
-                    Text("إلغاء")
+                    Text("إلغاء", color = NeutralDark)
                 }
             },
-            title = { Text("تغير رمز الحماية PIN", fontWeight = FontWeight.Bold) },
+            title = { Text("تغير رمز الحماية PIN", fontWeight = FontWeight.Bold, color = NeutralDark) },
             text = {
                 OutlinedTextField(
                     value = newPinInput,
@@ -936,6 +1344,11 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     label = { Text("الرمز السري الجديد") },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = PrimaryTeal,
+                        unfocusedBorderColor = NeutralBorder,
+                        focusedLabelColor = PrimaryTeal
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -949,7 +1362,7 @@ fun DuaScreen() {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(Color(0xFFF9F9FF))
+            .background(NeutralLight)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -957,7 +1370,7 @@ fun DuaScreen() {
             text = "الأذكار والتحصينات",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF003527)
+            color = PrimaryTeal
         )
 
         DuaCard(title = "أذكار الصباح", body = "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.")
@@ -970,13 +1383,14 @@ fun DuaScreen() {
 fun DuaCard(title: String, body: String) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(1.dp, NeutralBorder),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFFFE932C))
+        Column(modifier = Modifier.padding(20.dp)) {
+            Text(title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = PrimaryTeal)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(body, fontSize = 14.sp, color = Color(0xFF003527), lineHeight = 22.sp, textAlign = TextAlign.Justify)
+            Text(body, fontSize = 14.sp, color = NeutralDark, lineHeight = 22.sp, textAlign = TextAlign.Justify)
         }
     }
 }
@@ -996,11 +1410,11 @@ fun BottomNavigationBar(
             icon = { Icon(imageVector = Icons.Default.AccessTime, contentDescription = null) },
             label = { Text("الصلوات") },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color(0xFFFE932C),
-                selectedTextColor = Color(0xFFFE932C),
-                indicatorColor = Color(0xFFE7EEFF),
-                unselectedIconColor = Color.Gray,
-                unselectedTextColor = Color.Gray
+                selectedIconColor = PrimaryTeal,
+                selectedTextColor = PrimaryTeal,
+                indicatorColor = PrimaryContainerTeal,
+                unselectedIconColor = NeutralMedium,
+                unselectedTextColor = NeutralMedium
             )
         )
         NavigationBarItem(
@@ -1009,11 +1423,11 @@ fun BottomNavigationBar(
             icon = { Icon(imageVector = Icons.Default.MenuBook, contentDescription = null) },
             label = { Text("الأذكار") },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color(0xFFFE932C),
-                selectedTextColor = Color(0xFFFE932C),
-                indicatorColor = Color(0xFFE7EEFF),
-                unselectedIconColor = Color.Gray,
-                unselectedTextColor = Color.Gray
+                selectedIconColor = PrimaryTeal,
+                selectedTextColor = PrimaryTeal,
+                indicatorColor = PrimaryContainerTeal,
+                unselectedIconColor = NeutralMedium,
+                unselectedTextColor = NeutralMedium
             )
         )
         NavigationBarItem(
@@ -1022,11 +1436,11 @@ fun BottomNavigationBar(
             icon = { Icon(imageVector = Icons.Default.Settings, contentDescription = null) },
             label = { Text("الإعدادات") },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color(0xFFFE932C),
-                selectedTextColor = Color(0xFFFE932C),
-                indicatorColor = Color(0xFFE7EEFF),
-                unselectedIconColor = Color.Gray,
-                unselectedTextColor = Color.Gray
+                selectedIconColor = PrimaryTeal,
+                selectedTextColor = PrimaryTeal,
+                indicatorColor = PrimaryContainerTeal,
+                unselectedIconColor = NeutralMedium,
+                unselectedTextColor = NeutralMedium
             )
         )
     }

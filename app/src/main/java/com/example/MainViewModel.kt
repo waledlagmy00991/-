@@ -13,6 +13,18 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+import kotlinx.coroutines.Dispatchers
+import java.io.File
+import java.net.URL
+import java.net.HttpURLConnection
+
+sealed class DownloadState {
+    object Idle : DownloadState()
+    object Downloading : DownloadState()
+    object Success : DownloadState()
+    data class Error(val message: String) : DownloadState()
+}
+
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = AppDatabase.getDatabase(application)
@@ -27,6 +39,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _nextPrayerCountdown = MutableStateFlow("00:00:00")
     val nextPrayerCountdown: StateFlow<String> = _nextPrayerCountdown.asStateFlow()
+
+    private val _downloadState = MutableStateFlow<DownloadState>(DownloadState.Idle)
+    val downloadState: StateFlow<DownloadState> = _downloadState.asStateFlow()
 
     private val _nextPrayerName = MutableStateFlow("الفجر")
     val nextPrayerName: StateFlow<String> = _nextPrayerName.asStateFlow()
@@ -48,6 +63,54 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             refreshPrayerTimes()
             startCountdownClock()
+        }
+        downloadAthanIfMissing()
+    }
+
+    fun downloadAthanIfMissing() {
+        val context = getApplication<Application>()
+        val file = File(context.filesDir, "minshawi_athan.mp3")
+        if (file.exists() && file.length() > 100000) {
+            _downloadState.value = DownloadState.Success
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _downloadState.value = DownloadState.Downloading
+            try {
+                val url = URL("https://download.quranicaudio.com/adhan/sheikh_muhammad_siddiq_al-minshawi.mp3")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.connectTimeout = 15000
+                connection.readTimeout = 15000
+                connection.connect()
+
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    val tempFile = File(context.cacheDir, "temp_athan.mp3")
+                    val inputStream = connection.inputStream
+                    val outputStream = tempFile.outputStream()
+                    val buffer = ByteArray(8192)
+                    var bytesRead: Int
+                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+                    outputStream.flush()
+                    outputStream.close()
+                    inputStream.close()
+
+                    if (tempFile.exists() && tempFile.length() > 0) {
+                        tempFile.copyTo(file, overwrite = true)
+                        tempFile.delete()
+                        _downloadState.value = DownloadState.Success
+                    } else {
+                        _downloadState.value = DownloadState.Error("تحميل ملف فارغ")
+                    }
+                } else {
+                    _downloadState.value = DownloadState.Error("خطأ تحميل: ${connection.responseCode}")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _downloadState.value = DownloadState.Error(e.localizedMessage ?: "حدث خطأ غير معروف")
+            }
         }
     }
 

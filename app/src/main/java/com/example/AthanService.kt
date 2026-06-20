@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
 import android.net.Uri
 import android.os.*
 import androidx.core.app.NotificationCompat
@@ -21,6 +23,7 @@ class AthanService : Service() {
     private var originalVolume = 0
     private var isPlaying = false
     private var volumeLockJob: Job? = null
+    private var audioFocusRequest: AudioFocusRequest? = null
 
     companion object {
         const val CHANNEL_ID = "AlMinshawiAthanChannel"
@@ -85,22 +88,54 @@ class AthanService : Service() {
         if (isPlaying) return
         isPlaying = true
 
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val audioAttributes = AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+                audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE)
+                    .setAudioAttributes(audioAttributes)
+                    .setAcceptsDelayedFocusGain(true)
+                    .setOnAudioFocusChangeListener { }
+                    .build()
+                audioFocusRequest?.let { audioManager.requestAudioFocus(it) }
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.requestAudioFocus(
+                    { },
+                    AudioManager.STREAM_ALARM,
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         serviceScope.launch {
             val db = AppDatabase.getDatabase(this@AthanService)
             val config = db.configDao().getConfig()
             val isCommitment = config?.isCommitmentModeEnabled ?: true
 
             try {
-                // Initialize Media Player
                 mediaPlayer = MediaPlayer()
                 
-                // We attempt to play from a local asset or file cache if downloaded, otherwise load a built-in alarm tone as fallback
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val audioAttributes = AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                    mediaPlayer?.setAudioAttributes(audioAttributes)
+                } else {
+                    @Suppress("DEPRECATION")
+                    mediaPlayer?.setAudioStreamType(AudioManager.STREAM_ALARM)
+                }
+
                 val minshawiRealFile = File(filesDir, "minshawi_athan.mp3")
-                if (minshawiRealFile.exists()) {
+                if (minshawiRealFile.exists() && minshawiRealFile.length() > 100000) {
                     mediaPlayer?.setDataSource(minshawiRealFile.absolutePath)
                 } else {
-                    // Try to stream or fall back to standard ringtone
-                    val alarmUri: Uri = Uri.parse("android.resource://${packageName}/raw/athan_minshawi")
+                    val alarmUri = Uri.parse("android.resource://${packageName}/raw/athan_minshawi")
                     try {
                         mediaPlayer?.setDataSource(this@AthanService, alarmUri)
                     } catch (e: Exception) {
@@ -109,8 +144,8 @@ class AthanService : Service() {
                     }
                 }
 
-                mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
                 mediaPlayer?.isLooping = true
+                mediaPlayer?.setVolume(1.0f, 1.0f)
                 mediaPlayer?.prepareAsync()
                 mediaPlayer?.setOnPreparedListener { mp ->
                     mp.start()
@@ -130,9 +165,23 @@ class AthanService : Service() {
     private fun playSystemFallback() {
         try {
             mediaPlayer?.release()
-            mediaPlayer = MediaPlayer.create(this, android.provider.Settings.System.DEFAULT_ALARM_ALERT_URI)
-            mediaPlayer?.isLooping = true
-            mediaPlayer?.start()
+            mediaPlayer = MediaPlayer().apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val attrs = AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build()
+                    setAudioAttributes(attrs)
+                } else {
+                    @Suppress("DEPRECATION")
+                    setAudioStreamType(AudioManager.STREAM_ALARM)
+                }
+                setDataSource(this@AthanService, android.provider.Settings.System.DEFAULT_ALARM_ALERT_URI)
+                isLooping = true
+                setVolume(1.0f, 1.0f)
+                prepare()
+                start()
+            }
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -143,10 +192,9 @@ class AthanService : Service() {
             while (isActive) {
                 val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0)
-                // Enforce notification volume as well
                 val maxRingtone = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
                 audioManager.setStreamVolume(AudioManager.STREAM_ALARM, maxRingtone, 0)
-                delay(500) // Keep resetting volume every half second
+                delay(500)
             }
         }
     }
@@ -160,6 +208,18 @@ class AthanService : Service() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                audioFocusRequest?.let { audioManager.abandonAudioFocusRequest(it) }
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.abandonAudioFocus { }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        
         stopSelf()
     }
 
@@ -168,6 +228,18 @@ class AthanService : Service() {
         volumeLockJob?.cancel()
         serviceJob.cancel()
         mediaPlayer?.release()
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                audioFocusRequest?.let { audioManager.abandonAudioFocusRequest(it) }
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.abandonAudioFocus { }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        
         super.onDestroy()
     }
 
